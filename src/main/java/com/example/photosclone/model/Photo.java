@@ -1,4 +1,4 @@
-package com.example.photosclone;
+package com.example.photosclone.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotEmpty;
@@ -7,6 +7,7 @@ public class Photo {
     private String id;
     @NotEmpty
     private String filename;
+    private String contentType;
     @JsonIgnore
     private byte[] data;
     public Photo(){}
@@ -32,6 +33,16 @@ public class Photo {
         this.filename = filename;
         System.out.println("The file name is "+filename);
     }
+
+    //Getter and setter for contentType
+    public String getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
+    }
+
     //Getter ans setter for jpg data
     public byte[] getData() {
         return data;

@@ -1,5 +1,7 @@
-package com.example.photosclone;
+package com.example.photosclone.web;
 
+import com.example.photosclone.model.Photo;
+import com.example.photosclone.service.PhotosService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -8,9 +10,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
 
 @RestController
 public class PhotosController {
@@ -50,6 +49,6 @@ public class PhotosController {
     }
     @PostMapping("/photos")
     public  Photo createPhoto(@RequestPart("data") @Valid MultipartFile file) throws IOException {
-        return photoService.save(file.getOriginalFilename(),file.getBytes());
+        return photoService.save(file.getOriginalFilename(),file.getBytes(),file.getContentType());
     }
 }
