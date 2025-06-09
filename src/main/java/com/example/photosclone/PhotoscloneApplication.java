@@ -9,5 +9,4 @@ public class 	PhotoscloneApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(PhotoscloneApplication.class, args);
 	}
-
 }

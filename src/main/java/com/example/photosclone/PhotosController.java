@@ -3,8 +3,10 @@ package com.example.photosclone;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -12,10 +14,13 @@ import java.util.UUID;
 
 @RestController
 public class PhotosController {
-    HashMap<String,Photo>db=new HashMap<>(){{
-        put("1",new Photo("1","timepass.jpg"));
-        put("2",new Photo("2","hello.jpg"));
-    }};
+
+    private final PhotosService photoService;
+
+    public PhotosController(PhotosService photoService){
+        this.photoService=photoService;
+    }
+
     @GetMapping("/")
     public  String defaultPage(){
         return "Default Page";
@@ -26,11 +31,11 @@ public class PhotosController {
     }
     @GetMapping("/photos")
     public Collection<Photo> getAll(){
-        return db.values();
+        return photoService.values();
     }
     @GetMapping("/photos/{id}")
     public Photo getPhoto(@PathVariable String id){
-        Photo photo= db.get(id);
+        Photo photo= photoService.get(id);
         if(photo==null){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
@@ -38,15 +43,13 @@ public class PhotosController {
     }
     @DeleteMapping("/photos/{id}")
     public void deletePhoto(@PathVariable String id){
-        Photo photo=db.remove(id);
+        Photo photo=photoService.remove(id);
         if(photo==null){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
     }
     @PostMapping("/photos")
-    public Photo createPhoto(@RequestBody @Valid Photo photo){
-        photo.setId(UUID.randomUUID().toString());
-        db.put(photo.getId(),photo);
-        return photo;
+    public  Photo createPhoto(@RequestPart("data") @Valid MultipartFile file) throws IOException {
+        return photoService.save(file.getOriginalFilename(),file.getBytes());
     }
 }
