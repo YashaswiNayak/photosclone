@@ -17,7 +17,7 @@ public class DownloadController {
         this.photoService=photoService;
     }
     @GetMapping("/download/{id}")
-    public ResponseEntity<byte[]> downloadPhoto(@PathVariable String id){
+    public ResponseEntity<byte[]> downloadPhoto(@PathVariable Integer id){
         Photo photo=photoService.get(id);
         if(photo==null){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
@@ -25,7 +25,7 @@ public class DownloadController {
         byte[] data = photo.getData();
         HttpHeaders headers=new HttpHeaders();
         headers.setContentType(MediaType.valueOf(photo.getContentType()));
-        ContentDisposition build=ContentDisposition.builder("attachment").filename(photo.getFilename()).build();
+        ContentDisposition build=ContentDisposition.builder("attachment").filename(photo.getFileName()).build();
         headers.setContentDisposition(build);
         return new ResponseEntity<>(data,headers, HttpStatus.OK)
 ;    }

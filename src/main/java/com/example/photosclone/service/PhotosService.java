@@ -1,39 +1,43 @@
 package com.example.photosclone.service;
 
 import com.example.photosclone.model.Photo;
+import com.example.photosclone.repositoty.PhotosRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.UUID;
 
 @Service
 public class PhotosService {
 
-    HashMap<String, Photo> db=new HashMap<>(){{
-        put("1",new Photo("1","timepass.jpg",null));
-        put("2",new Photo("2","hello.jpg",null));
-    }};
+    private final PhotosRepository photosRepository;
 
-    public Collection<Photo> values() {
-        return db.values();
+
+    public PhotosService(PhotosRepository photosRepository) {
+        this.photosRepository = photosRepository;
     }
 
-    public Photo remove(String id) {
-        return db.remove(id);
+
+    public Iterable<Photo> values() {
+        return photosRepository.findAll();
+    }
+
+    public void remove(Integer id) {
+         photosRepository.deleteById(id);
     }
 
     public Photo save(String filename, byte[] data, String contentType) {
         Photo photo=new Photo();
-        photo.setId(UUID.randomUUID().toString());
-        photo.setFilename(filename);
+        photo.setFileName(filename);
         photo.setData(data);
         photo.setContentType(contentType);
-        db.put(photo.getId(),photo);
+        photosRepository.save(photo);
         return photo;
     }
 
-    public Photo get(String id) {
-        return db.get(id);
+    public Photo get(Integer id) {
+        return photosRepository.findById(id).orElse(null);
     }
 }

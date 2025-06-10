@@ -1,6 +1,8 @@
-create table if not exists photos(
+CREATE SCHEMA IF NOT EXISTS PHOTOS;
+
+CREATE TABLE IF NOT EXISTS PHOTOS.Photo (
     id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    file_name varchar(255),
-    content_type varchar(255),
-    data binary large object
-);
+    file_name VARCHAR(255),
+    content_type VARCHAR(255),
+    data BLOB
+)

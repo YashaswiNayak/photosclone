@@ -1,37 +1,36 @@
 package com.example.photosclone.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
-
+@Entity
+@Table(schema = "PHOTOS")
 public class Photo {
-    private String id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
     @NotEmpty
-    private String filename;
+    private String fileName;
+
     private String contentType;
     @JsonIgnore
     private byte[] data;
     public Photo(){}
-    public Photo(String id , String filename,byte[] data){
-        this.id=id;
-        this.filename=filename;
-        this.data=data;
-    }
     //Getter and setter for id
-    public String getId() {
+    public Integer getId() {
         return id;
     }
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
-
-    //Getter and setter for filename
-    public String getFilename() {
-        return filename;
+    //Getter and setter for fileName
+    public String getFileName() {
+        return fileName;
     }
 
-    public void setFilename(String filename) {
-        this.filename = filename;
-        System.out.println("The file name is "+filename);
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+        System.out.println("The file name is "+fileName);
     }
 
     //Getter and setter for contentType
